@@ -98,8 +98,8 @@ def adicionar_produto(estoque):
 
     while True:
         try:
-            preco = float(input("Digite o preço do produto: "))
-            if preco <= 0:
+            preco_custo = float(input("Digite o preço de custo do produto: "))
+            if preco_custo <= 0:
                 raise ValueError("Digite um valor válido.")
         except ValueError as e:
             print(f"ERRO: {e}")
@@ -108,9 +108,25 @@ def adicionar_produto(estoque):
         finally:
             limpar_tela()
         break
+    
+    while True:
+        try:
+            preco_venda = float(input("Digite o preço de venda do produto: "))
+            if preco_venda <= 0:
+                raise ValueError("Digite um valor válido.")
+        except ValueError as e:
+            print(f"ERRO: {e}")
+            pausar()
+            continue
+        finally:
+            limpar_tela()
+        break
+    
+    #Calcula o lucro do produto:
+    lucro = preco_venda - preco_custo
 
     #Adiciona o produto ao estoque e exibe uma mensagem de sucesso:
-    estoque.update({produto: {"quantidade": quantidade, "preço": preco}})
+    estoque.update({produto: {"quantidade": quantidade, "preço custo": preco_custo, "preço venda": preco_venda, "lucro": lucro}})
     print("Produto cadastrado com sucesso!")
     pausar()
     limpar_tela()
@@ -157,7 +173,9 @@ def listar_produtos(estoque):
         for produto, info in estoque.items():
             print(f"Produto: {produto}\n"
                 f"Quantidade: {info['quantidade']}\n"
-                f"Preço: R${info['preço']:.2f}")
+                f"Preço de Custo: R${info['preço custo']:.2f}\n"
+                f"Preço de Venda: R${info['preço venda']:.2f}\n"
+                f"Lucro: R${info['lucro']:.2f}")
             print("------------------------------------------------------")
         pausar()
         limpar_tela()
@@ -179,7 +197,9 @@ def consultar_produto(estoque):
                     print("------------------------------------------------------")
                     print(f"Produto: {produto}\n"
                         f"Quantidade: {estoque[produto]['quantidade']}\n"
-                        f"Preço: R${estoque[produto]['preço']}")
+                        f"Preço de Custo: R${estoque[produto]['preço custo']}\n"
+                        f"Preço de Venda: R${estoque[produto]['preço venda']}\n"
+                        f"Lucro: R${estoque[produto]['lucro']}")
                     print("------------------------------------------------------")
                     pausar()
                     break
