@@ -1,34 +1,68 @@
-from os import system
+from os import system, name
 from time import sleep
 
 
 def limpar_tela():
-    system('cls')
+    '''
+    Executa a função de limpar a tela do terminal
+    de acordo com o sistema operacional do usuário.
+    '''
+    if name == 'nt': #Windows
+        system('cls')
+    else: #Linux, MacOS, etc
+        system('clear')
 
 
-def menu():
+def espera_comando_user():
+    input('Pressione ENTER para continuar...')
+
+
+def cartao_nao_encontrado():
+    limpar_tela()
+    print('Cartão não encontrado!')
+    espera_comando_user()
+    limpar_tela()
+    
+
+def dados_cartao_vazia():
+    limpar_tela()
+    print('Você não possui um cartão cadastrado!')
+    espera_comando_user()
+    limpar_tela()
+    
+    
+def menu_principal():
     print('--------------------------------------------------')
     print('--------------> CADASTRO DE CARTÃO <--------------')
-    print('[1] Cadastrar cartão \n[2] Ver dados do cartão '
-          '\n[3] Alterar dados do cartão \n[4] Excluir cartão '
-          '\n[5] Sair')
+    print('[1] Cadastrar cartão \n[2] Ver dados do cartão \n'
+          '[3] Excluir cartão \n[4] Sair')
     print('--------------------------------------------------')
     print('--------------------------------------------------')
 
 
+def menu_dados_cartao():
+    print("----------------------------------------------------------------")
+    print("- Para acessar os dados do cartão, informe o apelido do mesmo! -")
+    print("----------------------------------------------------------------")
+    
+    
 def obter_opcao():
     try:
         opcao = int(input('Informe a opção: '))
         print('--------------------------------------------------')
-        if 1 <= opcao <= 5:
+        if 1 <= opcao <= 4:
             return opcao
         else:
             limpar_tela()
             print('A opção sugerida é inválida!')
+            espera_comando_user()
+            limpar_tela()
             
     except ValueError:
         limpar_tela()
         print('A opção sugerida é inválida!')
+        espera_comando_user()
+        limpar_tela()
 
 
 def menu_agencia():
@@ -48,295 +82,361 @@ def menu_tipo_cartao():
           '\n[3] Crédito e Débito')
     print('-------------------------')
 
-            
+                                          
 def cadastrar_cartao(dados_cartao):
     print('------------------------------------------------------------')
     print('- Antes de prosseguir, preste atenção aos dados inseridos! -')
     print('------------------------------------------------------------')
-    sleep(6)
-    limpar_tela()
-               
+    espera_comando_user()
+    limpar_tela()                
+    
     #Funções:
     def definir_agencia():
-            while True:
-                menu_agencia()
-                try:
-                    global agencia
-                    agencia = int(input('Agência: '))
-                    print('-------------------------')
-                    if 1 <= agencia <= 4:
-                        match agencia:
-                            case 1:
-                                agencia = 'Visa'
-                            case 2:
-                                agencia = 'MasterCard'
-                            case 3:
-                                agencia = 'Hipercard'
-                            case 4:
-                                agencia = 'Alelo'
-                        limpar_tela()
-                        break                    
-                    else:
-                        limpar_tela()
-                        print('A agência sugerida é inválida!')                   
-                except ValueError:
+        while True:
+            #Menu das agências disponíveis:
+            menu_agencia()
+            try:
+                agencia = int(input('Agência: '))
+                print('-------------------------')
+                #Verifica se a agência informada existe:
+                if 1 <= agencia <= 4:
+                    #Atribui a agência de acordo com a opção informada:
+                    match agencia:
+                        case 1:
+                            agencia = 'Visa'
+                        case 2:
+                            agencia = 'MasterCard'
+                        case 3:
+                            agencia = 'Hipercard'
+                        case 4:
+                            agencia = 'Alelo'
                     limpar_tela()
-                    print('A agência sugerida é inválida!')     
-        
-    def definir_tipo_cartao():   
-            while True:
-                menu_tipo_cartao()
-                try:
-                    global tipo_cartao
-                    tipo_cartao = int(input('Tipo de cartão: '))
-                    print('-------------------------')
-                    if 1 <= tipo_cartao <= 3:                   
-                        match tipo_cartao:
-                            case 1:
-                                tipo_cartao = 'Crédito'
-                            case 2:
-                                tipo_cartao = 'Débito'
-                            case 3:
-                                tipo_cartao = 'Crédito e Débito' 
-                        limpar_tela()
-                        break                                                                                                                         
-                    else:
-                        limpar_tela()
-                        print('O tipo de cartão sugerido é inválido!')
-                                
-                except ValueError:
+                    return agencia
+                #Caso a agência não esteja entre as opções:                   
+                else:
+                    limpar_tela()
+                    print('A agência sugerida é inválida!') 
+                    espera_comando_user()
+                    limpar_tela()
+                    continue
+                    
+            except ValueError:
+                limpar_tela()
+                print('A agência sugerida é inválida!')
+                espera_comando_user()
+                limpar_tela()
+                                           
+    def definir_tipo_cartao():
+        while True:
+            menu_tipo_cartao()
+            
+            #Verifica se o tipo do cartão é um número inteiro:
+            try:
+                tipo_cartao = int(input('Tipo de cartão: '))
+                print('-------------------------')
+                if 1 <= tipo_cartao <= 3:                   
+                    match tipo_cartao:
+                        case 1:
+                            tipo_cartao = 'Crédito'
+                        case 2:
+                            tipo_cartao = 'Débito'
+                        case 3:
+                            tipo_cartao = 'Crédito e Débito' 
+                    limpar_tela()
+                    return tipo_cartao                                                                                                                       
+                else:
                     limpar_tela()
                     print('O tipo de cartão sugerido é inválido!')
-        
-    def definir_num_cartao():
-            while True:
-                try:
-                    global numero_cartao
-                    print('COLOQUE ESPAÇOS A CADA 4 DÍGITOS!')
-                    print('--------------------------------------------------')
-                    numero_cartao = input('Número do cartão (16 dígitos): ')
-                    elimina_espacos = numero_cartao.replace(' ', '')
-                    
-                    if elimina_espacos.isdigit() == False:
-                        limpar_tela()
-                        print('Só é permitido números!!')
-                        print('--------------------------------------------------')                       
-                    else:
-                        if len(elimina_espacos) == 16:
-                            limpar_tela()
-                            break
-                        else:
-                            limpar_tela()
-                            print('O número precisa ter 16 dígitos!')
-                            print('--------------------------------------------------')
-                            
-                except ValueError:
+                    espera_comando_user()
                     limpar_tela()
-                    print('Só é permitido números!')
-                    print('--------------------------------------------------')
-        
-    def definir_validade_cartao():
-            while True:
-                try:
-                    global validade_cartao
-                    mes = int(input('Mês de validade (1-12): '))           
-                    ano = int(input('Ano de validade (1 ou 2 dígitos): '))
-                    validade_cartao = f'{mes:02}/{ano:02}'           
-                except ValueError:
-                    limpar_tela()
-                    print('Só é permitido números!')
-                    print('--------------------------------------------------')           
+                    continue
+            
+            #Caso o tipo do cartão seja diferente de um número inteiro:                
+            except ValueError:
                 limpar_tela()
-                break
-        
-    def definir_cvv():
-            while True:
-                try:
-                    global cvv
-                    cvv = input('CVV (3 dígitos): ')
-                    if cvv.isdigit() == False:
-                        limpar_tela()
-                        print('Só é permitido números!')
-                        print('--------------------------------------------------')                        
-                    else:
-                        if len(cvv) == 3:
-                            limpar_tela()
-                            break
-                        else:
-                            limpar_tela()
-                            print('É obrigatório ter 3 digítos!')
-                            print('--------------------------------------------------')
-                except ValueError:
-                    limpar_tela()
-                    print('Só é permitido números!')
-                    print('--------------------------------------------------')  
-        
-    def definir_nome_titular():
-            while True:
-                global nome_titular_formatado
-                nome_titular = input('Nome do titular: ').split()
-                nome_titular_formatado = ' '.join(nome_titular.capitalize() for nome_titular in nome_titular)
-                elimina_espacos = nome_titular_formatado.replace(' ', '')
+                print('O tipo de cartão sugerido é inválido!')
+                espera_comando_user()
+                limpar_tela()
+                                 
+    def definir_num_cartao():
+        while True:
+            try:
+                print('COLOQUE ESPAÇOS A CADA 4 DÍGITOS!')
+                print('--------------------------------------------------')
+                numero_cartao = input('Número do cartão (16 dígitos): ')
+                #Elimina os espaços em branco (facilita a contagem dos dígitos):
+                elimina_espacos = numero_cartao.replace(' ', '')
                 
-                if elimina_espacos.isalpha() == False:
+                #Verifica se o número do cartão só contém dígitos:
+                if not elimina_espacos.isdigit():
                     limpar_tela()
-                    print('Só é permitido letras!')
+                    print('Só é permitido números!!')
                     print('--------------------------------------------------')
+                    espera_comando_user()
+                    limpar_tela()
+                    continue
                 else:
-                    if len(nome_titular) >= 3:
+                    #Verifica se o número do cartão tem 16 dígitos:
+                    if len(elimina_espacos) == 16:
                         limpar_tela()
-                        break
+                        return numero_cartao
                     else:
                         limpar_tela()
-                        print('É necessário, pelo menos, três nomes!')
+                        print('O número precisa ter 16 dígitos!')
                         print('--------------------------------------------------')
-        
-    def definir_cpf():
-            while True:
-                try:
-                    global cpf
-                    cpf = input('CPF (11 dígitos, com ponto e traço): ')
-                    elimina_carac_especiais = cpf.replace('.','').replace('-', '')
-                    
-                    if elimina_carac_especiais.isdigit() == False:
+                        espera_comando_user()
                         limpar_tela()
-                        print('Só é permitido números!') 
-                        print('--------------------------------------------------')
-                    else:    
-                        if len(elimina_carac_especiais) == 11:
-                            limpar_tela()
-                            break
-                        else:
-                            limpar_tela()
-                            print('Cpf inválido, é necessário 11 dígitos!')
-                            print('--------------------------------------------------')
-                except ValueError:
+                        continue
+                        
+            except ValueError:
+                limpar_tela()
+                print('Só é permitido números!')
+                print('--------------------------------------------------')
+                espera_comando_user()
+                limpar_tela()
+            
+    def definir_validade_cartao():
+        while True:
+            try:
+                mes = int(input('Mês de validade (1-12): '))           
+                ano = int(input('Ano de validade (1 ou 2 dígitos): '))
+                #Formata as datas de validade do cartão:
+                validade_cartao = f'{mes:02}/{ano:02}'
+                limpar_tela()
+                return validade_cartao                             
+            except ValueError:
+                limpar_tela()
+                print('Só é permitido números!')
+                print('--------------------------------------------------')
+                espera_comando_user()
+                continue
+
+    def definir_cvv():
+        while True:
+            try:
+                cvv = input('CVV (3 dígitos): ')
+                #Verifica se o cvv só contém números:
+                if not cvv.isdigit():
                     limpar_tela()
                     print('Só é permitido números!')
-                    print('--------------------------------------------------')          
-        
-    def definir_apelido_cartao():
-            global apelido_cartao
-            apelido_cartao = input('Apelido do cartão: ').capitalize()                        
-        
+                    print('--------------------------------------------------')
+                    espera_comando_user()
+                    limpar_tela()
+                    continue                       
+                else:
+                    #Verifica se o cvv tem 3 dígitos:
+                    if len(cvv) == 3:
+                        limpar_tela()
+                        return cvv 
+                    else:
+                        limpar_tela()
+                        print('É obrigatório ter 3 digítos!')
+                        print('--------------------------------------------------')
+                        espera_comando_user()
+                        limpar_tela()
+                        continue
+
+            except ValueError:
+                limpar_tela()
+                print('Só é permitido números!')
+                print('--------------------------------------------------')
+                espera_comando_user()
+                limpar_tela()  
+
+    def definir_nome_titular():
+        while True:
+            #A função "split" separa os nomes do titular e os armazena em uma lista:
+            nome_titular = input('Nome do titular: ').split()
+            #Formata os nomes informados pelo usuário:
+            nome_titular_formatado = ' '.join(nome_titular.capitalize() for nome_titular in nome_titular)
+            #Elimina os espaços em branco (facilita a verificação):
+            elimina_espacos = nome_titular_formatado.replace(' ', '')
+            
+            #verifica se o nome do titular só contém letras:
+            if not elimina_espacos.isalpha():
+                limpar_tela()
+                print('Só é permitido letras!')
+                print('--------------------------------------------------')
+                espera_comando_user()
+                limpar_tela()
+                continue
+            else:
+                #Verifica a quantidade de nomes do titular:
+                if len(nome_titular) >= 2:
+                    limpar_tela()
+                    return nome_titular_formatado
+                else:
+                    limpar_tela()
+                    print('É necessário pelo menos dois nomes!')
+                    print('--------------------------------------------------')
+                    espera_comando_user()
+                    limpar_tela()
+                    continue
+            
+    def definir_cpf():
+        while True:
+            try:
+                cpf = input('CPF (11 dígitos, com ponto e traço): ')
+                #Elimina os pontos e traços do cpf (facilita a verificação):
+                elimina_carac_especiais = cpf.replace('.','').replace('-', '')
+                
+                if not elimina_carac_especiais.isdigit():
+                    limpar_tela()
+                    print('Só é permitido números!') 
+                    print('--------------------------------------------------')
+                    espera_comando_user()
+                    limpar_tela()
+                    continue
+                else:    
+                    if len(elimina_carac_especiais) == 11:
+                        limpar_tela()
+                        return cpf
+                    else:
+                        limpar_tela()
+                        print('Cpf inválido, é necessário 11 dígitos!')
+                        print('--------------------------------------------------')
+                        espera_comando_user()
+                        limpar_tela()
+                        continue
+
+            except ValueError:
+                limpar_tela()
+                print('Só é permitido números!')
+                print('--------------------------------------------------')
+                espera_comando_user()
+                limpar_tela()
+
+    def definir_apelido_cartao(dados_cartao):
+        while True:
+            apelido_cartao = input('Apelido do cartão: ').capitalize()
+            
+            if apelido_cartao in dados_cartao:
+                limpar_tela()
+                print('Apelido já cadastrado!')
+                espera_comando_user()
+                limpar_tela()
+                continue
+            else:
+                limpar_tela()
+                return apelido_cartao
+                      
     #Chamando as funções:       
-    definir_agencia()
-    definir_tipo_cartao()
-    definir_num_cartao()
-    definir_validade_cartao()
-    definir_cvv()
-    definir_nome_titular()
-    definir_cpf()
-    definir_apelido_cartao()    
-        
-    #Retorna a mensagem de cadastro realizado e insere as informações:      
-    limpar_tela()
+    agencia = definir_agencia()
+    tipo_cartao = definir_tipo_cartao()
+    num_cartao = definir_num_cartao()
+    validade_cartao = definir_validade_cartao()
+    cvv = definir_cvv()
+    nome_titular = definir_nome_titular()
+    cpf = definir_cpf()
+    apelido_cartao = definir_apelido_cartao(dados_cartao)
+    
+    #Insere as informações do cartão em um dicionário:
+    dados_cartao.update({
+        apelido_cartao: {'agencia': agencia, 'tipo_cartao': tipo_cartao, 'numero_cartao': num_cartao,
+                         'validade_cartao': validade_cartao, 'cvv': cvv, 'nome_titular': nome_titular,
+                         'cpf': cpf}
+    })
+    
     print('Cartão cadastrado com sucesso!')
-    return {'agencia': agencia, 'tipo_cartao': tipo_cartao,
-            'numero_cartao': numero_cartao, 'validade_cartao': validade_cartao,
-            'cvv': cvv, 'nome_titular': nome_titular_formatado,
-            'cpf': cpf, 'apelido_cartao': apelido_cartao}
+    espera_comando_user()
+    limpar_tela()
+    return dados_cartao
 
 
 def ver_dados_cartao(dados_cartao):
+    #Verifica se existe algum cartão em "dados_cartao":
     if dados_cartao:
-        limpar_tela()
-        print('--------------------------------------------------')
-        print('Agencia: ', dados_cartao['agencia'])
-        print('Tipo de cartão: ', dados_cartao['tipo_cartao'])
-        print('Número do cartão: ', dados_cartao['numero_cartao'])
-        print('Validade do cartão: ', dados_cartao['validade_cartao'])
-        print('CVV: ', dados_cartao['cvv'])
-        print('Nome do titular: ', dados_cartao['nome_titular'])
-        print('CPF: ', dados_cartao['cpf'])
-        print('Apelido do cartão: ', dados_cartao['apelido_cartao'])
-        print('--------------------------------------------------')
-        input('Pressione ENTER para retornar ao menu...')
-        limpar_tela()
-        print('Visualização encerrada!')
+        while True:
+            menu_dados_cartao()
+            acesso_infos_cartao = input('Informe o apelido do cartão: ').capitalize()
+            
+            #verifica se o cartão existe em "dados_cartao":
+            if acesso_infos_cartao not in dados_cartao:
+                cartao_nao_encontrado()
+                continue
+            else:
+                #Exibe as informações do cartão informado pelo usuário:
+                limpar_tela()
+                print('--------------------------------------------------')
+                print(f'Agencia: {dados_cartao[acesso_infos_cartao]['agencia']}\n'
+                    f'Tipo de cartão: {dados_cartao[acesso_infos_cartao]['tipo_cartao']}\n'
+                    f'Número do cartão: {dados_cartao[acesso_infos_cartao]['numero_cartao']}\n'
+                    f'Validade do cartão: {dados_cartao[acesso_infos_cartao]['validade_cartao']}\n'
+                    f'CVV: {dados_cartao[acesso_infos_cartao]['cvv']}\n'
+                    f'Nome do titular: {dados_cartao[acesso_infos_cartao]['nome_titular']}\n'
+                    f'CPF: {dados_cartao[acesso_infos_cartao]['cpf']}\n'
+                    f'Apelido do cartão: {acesso_infos_cartao}')
+                print('--------------------------------------------------')
+                espera_comando_user()
+                limpar_tela()
+                return dados_cartao
+            
+    #Caso não haja cartões cadastrados:
     else:
-        limpar_tela()
-        print('Você não possui um cartão cadastrado!')
-    return dados_cartao
+        dados_cartao_vazia()
 
 
 def excluir_cartao(dados_cartao):
     if dados_cartao:
-        confirmacao = input('Você tem certeza? (sim/nao/não) ').lower()
-        match confirmacao:
-            case 'sim':
-                dados_cartao.clear()
-                limpar_tela()
-                print('Cartão excluído com sucesso!')
-            case 'nao' | 'não':
-                limpar_tela()
-                print('Operação encerrada, exclusão cancelada!')
-            case _:
-                limpar_tela()
-                print('Não entendi, tente novamente!')
-    else:
-        limpar_tela()
-        print('Você não possui um cartão cadastrado!')
-    return dados_cartao
-
-
-def alterar_dados_cartão(dados_cartao):
-    if dados_cartao:
-        limpar_tela()
-        print('---------------------------------------------------------')
-        print('------- Você só pode alterar o apelido do cartão! -------')
-        print('---------------------------------------------------------')
-        
         while True:
-            alternativa = input('Você deseja alterar o apelido do cartão? (sim/nao) ').lower()
-            match alternativa:
-                case 'sim':
-                    limpar_tela()
-                    alterar_apelido_cartao = input('Informe o novo apelido: ').capitalize()   
-                                                               
-                    if alterar_apelido_cartao == dados_cartao['apelido_cartao']:
+            selecionar_cartao = input('Informe o apelido do cartão que deseja excluir: ').capitalize()
+            #Caso o cartão selecionado não exista em "dados_cartao":
+            if selecionar_cartao not in dados_cartao:
+                cartao_nao_encontrado()
+                continue
+            else:       
+                confirmacao = input('Você tem certeza? (sim/nao/não) ').lower()
+                match confirmacao:
+                    #Exclui o cartão:
+                    case 'sim':
+                        del dados_cartao[selecionar_cartao]
                         limpar_tela()
-                        print('O novo apelido não pode ser igual ao antigo!')
-                        print('---------------------------------------------------------')                       
-                    else:
+                        print('Cartão excluído com sucesso!')
+                        espera_comando_user()
                         limpar_tela()
-                        dados_cartao['apelido_cartao'] = alterar_apelido_cartao
-                        print('Apelido alterado com sucesso!')                       
-                        break                                   
-                case 'nao' | 'não':
-                    limpar_tela()
-                    print('Operação encerrada, alteração cancelada!')
-                    break
-                case _:
-                    limpar_tela()
-                    print('Não entendi, tente novamente!')
-                    print('--------------------------------------------------')
+                        break
+                    #Cancela a operação de exclusão:
+                    case 'nao' | 'não':
+                        limpar_tela()
+                        print('Operação encerrada, exclusão cancelada!')
+                        espera_comando_user()
+                        limpar_tela()
+                        break
+                    #Caso a resposta seja inválida:
+                    case _:
+                        limpar_tela()
+                        print('Comando inválido!')
+                        espera_comando_user()
+                        limpar_tela()
+                        continue
     else:
-        limpar_tela()
-        print('Você não possui um cartão cadastrado!')
+        dados_cartao_vazia()
+        
     return dados_cartao
-  
-                                
+
+
+def fechar_programa():
+    for contagem in range(5, 0, -1):
+        print(f'Encerrando em {contagem}...')
+        sleep(1)
+    limpar_tela()
+    print('Até logo!')
+
+                            
 dados_cartao = {}
 
 while True:
-    menu()
+    menu_principal()
     opcao = obter_opcao()
+    limpar_tela()
     
     match opcao:
         case 1:
-            limpar_tela()          
-            result = cadastrar_cartao(dados_cartao)
-            if result is not None:
-                dados_cartao = result
+            dados_cartao = cadastrar_cartao(dados_cartao) 
         case 2:
             dados_cartao = ver_dados_cartao(dados_cartao)
         case 3:
-            dados_cartao = alterar_dados_cartão(dados_cartao)
-        case 4:
             dados_cartao = excluir_cartao(dados_cartao)
-        case 5:
-            for contagem in range(5, 0, -1):
-                print(f'Encerrando em {contagem}...')
-                sleep(1)
+        case 4:
+            fechar_programa()
             break
