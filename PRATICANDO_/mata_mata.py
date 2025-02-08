@@ -17,7 +17,7 @@ def mata_mata():
     # Lista de times: 16 times
     oitavas = [
         'Flamengo', 'Vasco', 'Botafogo', 'Fluminense', 'São Paulo', 'Palmeiras', 'Corinthians', 'Santos',
-        'Internacional', 'Grêmio', 'Atlético-MG', 'Cruzeiro', 'Bahia', 'Vitória', 'Sport', 'Mirassol'
+        'Internacional', 'Grêmio', 'Cuiabá', 'Cruzeiro', 'Bahia', 'Vitória', 'Sport', 'Mirassol'
     ]
     
     quartas = []
