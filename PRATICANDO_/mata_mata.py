@@ -84,17 +84,17 @@ def mata_mata():
                     oitavas.pop(posicao_time2)
                     quartas.append(time1)
                     oitavas.remove(time1)
-                print("O time que não passou foi:", time_nao_passa[0])
-            
-            #Caso não seja empate (segue a mesma lógica do bloco anterior):       
-            if placar_time1 > placar_time2:
-                oitavas.remove(time2)            
-                quartas.append(time1)
-                oitavas.remove(time1)
-            elif placar_time2 > placar_time1:
-                oitavas.remove(time1)
-                quartas.append(time2)
-                oitavas.remove(time2)
+                print("O time que não passou foi:", time_nao_passa[0])            
+            #Caso não seja empate (segue a mesma lógica do bloco anterior): 
+            else:      
+                if placar_time1 > placar_time2:
+                    oitavas.remove(time2)            
+                    quartas.append(time1)
+                    oitavas.remove(time1)
+                else:
+                    oitavas.remove(time1)
+                    quartas.append(time2)
+                    oitavas.remove(time2)
             print("--------------------------------------")
         
         pressione_enter()
@@ -124,15 +124,15 @@ def mata_mata():
                     semifinais.append(time1)
                     quartas.remove(time1)
                 print("O time que não passou foi:", time_nao_passa[0])
-            
-            if placar_time1 > placar_time2:
-                quartas.remove(time2)            
-                semifinais.append(time1)
-                quartas.remove(time1)
-            elif placar_time2 > placar_time1:
-                quartas.remove(time1)
-                semifinais.append(time2)
-                quartas.remove(time2)
+            else:           
+                if placar_time1 > placar_time2:
+                    quartas.remove(time2)            
+                    semifinais.append(time1)
+                    quartas.remove(time1)
+                else:
+                    quartas.remove(time1)
+                    semifinais.append(time2)
+                    quartas.remove(time2)
             print("--------------------------------------")
         pressione_enter()
         clear()    
@@ -161,15 +161,15 @@ def mata_mata():
                     final.append(time1)
                     semifinais.remove(time1)
                 print("O time que não passou foi:", time_nao_passa[0])
-            
-            if placar_time1 > placar_time2:
-                semifinais.remove(time2)
-                final.append(time1)
-                semifinais.remove(time1)           
-            elif placar_time2 > placar_time1:
-                semifinais.remove(time1)
-                final.append(time2)
-                semifinais.remove(time2)
+            else:
+                if placar_time1 > placar_time2:
+                    semifinais.remove(time2)
+                    final.append(time1)
+                    semifinais.remove(time1)           
+                else:
+                    semifinais.remove(time1)
+                    final.append(time2)
+                    semifinais.remove(time2)
             print("--------------------------------------")
         
         pressione_enter()
@@ -199,15 +199,15 @@ def mata_mata():
                     campeao.append(time1)
                     final.remove(time1)
                 print("O time que não passou foi:", time_nao_passa[0])
-            
-            if placar_time1 > placar_time2:
-                final.remove(time2)
-                campeao.append(time1)
-                final.remove(time1)           
-            elif placar_time2 > placar_time1:
-                final.remove(time1)
-                campeao.append(time2)
-                final.remove(time2)
+            else:            
+                if placar_time1 > placar_time2:
+                    final.remove(time2)
+                    campeao.append(time1)
+                    final.remove(time1)           
+                else:
+                    final.remove(time1)
+                    campeao.append(time2)
+                    final.remove(time2)
             print("--------------------------------------")
         
         pressione_enter()
@@ -228,7 +228,7 @@ def mata_mata():
     
     #Exibição do palpite do usuário:
     print(f"Seu palpite foi: {palpite}")
-    if palpite == campeao[0]:
+    if palpite in campeao:
         print("Parabéns, você acertou seu palpite!")
     else:
         print("Que pena, você errou seu palpite!")
