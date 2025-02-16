@@ -91,7 +91,7 @@ def cadastrar_cartao(dados_cartao):
     limpar_tela()                
     
     #Funções:
-    def definir_agencia():
+    def info_agencia():
         while True:
             #Menu das agências disponíveis:
             menu_agencia()
@@ -126,7 +126,7 @@ def cadastrar_cartao(dados_cartao):
                 espera_comando_user()
                 limpar_tela()
                                            
-    def definir_tipo_cartao():
+    def info_tipo_cartao():
         while True:
             menu_tipo_cartao()
             
@@ -158,13 +158,13 @@ def cadastrar_cartao(dados_cartao):
                 espera_comando_user()
                 limpar_tela()
                                  
-    def definir_num_cartao():
+    def info_num_cartao():
         while True:
             try:
-                print('COLOQUE ESPAÇOS A CADA 4 DÍGITOS!')
+                print('Não é necessário colocar espaços entre os números!')
                 print('--------------------------------------------------')
                 numero_cartao = input('Número do cartão (16 dígitos): ')
-                #Elimina os espaços em branco (facilita a contagem dos dígitos):
+                #Caso o usuário coloque espaços em branco:
                 elimina_espacos = numero_cartao.replace(' ', '')
                 
                 #Verifica se o número do cartão só contém dígitos:
@@ -178,6 +178,8 @@ def cadastrar_cartao(dados_cartao):
                 else:
                     #Verifica se o número do cartão tem 16 dígitos:
                     if len(elimina_espacos) == 16:
+                        #Formata o número do cartão colocando um "-" a cada 4 números:
+                        numero_cartao = "-".join(numero_cartao[i:i+4] for i in range(0, len(numero_cartao), 4))
                         limpar_tela()
                         return numero_cartao
                     else:
@@ -195,7 +197,7 @@ def cadastrar_cartao(dados_cartao):
                 espera_comando_user()
                 limpar_tela()
             
-    def definir_validade_cartao():
+    def info_validade_cartao():
         while True:
             try:
                 mes = int(input('Mês de validade (1-12): '))           
@@ -211,12 +213,14 @@ def cadastrar_cartao(dados_cartao):
                 espera_comando_user()
                 continue
 
-    def definir_cvv():
+    def info_cvv():
         while True:
             try:
                 cvv = input('CVV (3 dígitos): ')
+                elimina_espacos = cvv.replace(' ', '')
+                
                 #Verifica se o cvv só contém números:
-                if not cvv.isdigit():
+                if not elimina_espacos.isdigit():
                     limpar_tela()
                     print('Só é permitido números!')
                     print('--------------------------------------------------')
@@ -225,7 +229,7 @@ def cadastrar_cartao(dados_cartao):
                     continue                       
                 else:
                     #Verifica se o cvv tem 3 dígitos:
-                    if len(cvv) == 3:
+                    if len(elimina_espacos) == 3:
                         limpar_tela()
                         return cvv 
                     else:
@@ -243,10 +247,10 @@ def cadastrar_cartao(dados_cartao):
                 espera_comando_user()
                 limpar_tela()  
 
-    def definir_nome_titular():
+    def info_nome_titular():
         while True:
             #A função "split" separa os nomes do titular e os armazena em uma lista:
-            nome_titular = input('Nome do titular: ').split()
+            nome_titular = input('Nome do titular (coloque espaço a cada nome): ').split()
             #Formata os nomes informados pelo usuário:
             nome_titular_formatado = ' '.join(nome_titular.capitalize() for nome_titular in nome_titular)
             #Elimina os espaços em branco (facilita a verificação):
@@ -273,32 +277,45 @@ def cadastrar_cartao(dados_cartao):
                     limpar_tela()
                     continue
             
-    def definir_cpf():
+    def info_cpf():
         while True:
             try:
-                cpf = input('CPF (11 dígitos, com ponto e traço): ')
-                #Elimina os pontos e traços do cpf (facilita a verificação):
-                elimina_carac_especiais = cpf.replace('.','').replace('-', '')
-                
-                if not elimina_carac_especiais.isdigit():
+                cpf = input('CPF (11 dígitos sem pontos e traços): ')
+                #Verifica se o usuário já colocou "." e '-' nos lugares corretos:
+                if '.' in cpf[3] and '.' in cpf[7] and '-' in cpf[11]:
                     limpar_tela()
-                    print('Só é permitido números!') 
-                    print('--------------------------------------------------')
-                    espera_comando_user()
-                    limpar_tela()
-                    continue
-                else:    
-                    if len(elimina_carac_especiais) == 11:
+                    return cpf
+                #Caso ele não tenha os colocado nos lugares corretos:
+                else:
+                    #Elimina os pontos, traços e espaços vazios, caso o usuário os coloquem:
+                    elimina_carac_especiais = cpf.replace('.','').replace('-', '').replace(' ', '')
+                    
+                    if not elimina_carac_especiais.isdigit():
                         limpar_tela()
-                        return cpf
-                    else:
-                        limpar_tela()
-                        print('Cpf inválido, é necessário 11 dígitos!')
+                        print('Só é permitido números!') 
                         print('--------------------------------------------------')
                         espera_comando_user()
                         limpar_tela()
                         continue
-
+                    else:    
+                        if len(elimina_carac_especiais) == 11:
+                            #Adiciona pontos no cpf:
+                            cpf_com_pontos = '.'.join(elimina_carac_especiais[i:i+3] for i in range(0, len(elimina_carac_especiais), 3))
+                            #Separa cada elemento do cpf_com_pontos e os armazena em uma lista:
+                            elementos_cpf = [elemento for elemento in cpf_com_pontos]
+                            #Substitue o terceiro ponto por um traço:
+                            elementos_cpf[11] = '-'
+                            #Junta os elementos da lista em uma string:
+                            cpf = ''.join(elementos_cpf)
+                            limpar_tela()
+                            return cpf
+                        else:
+                            limpar_tela()
+                            print('Cpf inválido, é necessário 11 dígitos!')
+                            print('--------------------------------------------------')
+                            espera_comando_user()
+                            limpar_tela()
+                            continue
             except ValueError:
                 limpar_tela()
                 print('Só é permitido números!')
@@ -306,7 +323,7 @@ def cadastrar_cartao(dados_cartao):
                 espera_comando_user()
                 limpar_tela()
 
-    def definir_apelido_cartao(dados_cartao):
+    def info_apelido_cartao(dados_cartao):
         while True:
             apelido_cartao = input('Apelido do cartão: ').capitalize()
             
@@ -321,20 +338,20 @@ def cadastrar_cartao(dados_cartao):
                 return apelido_cartao
                       
     #Chamando as funções:       
-    agencia = definir_agencia()
-    tipo_cartao = definir_tipo_cartao()
-    num_cartao = definir_num_cartao()
-    validade_cartao = definir_validade_cartao()
-    cvv = definir_cvv()
-    nome_titular = definir_nome_titular()
-    cpf = definir_cpf()
-    apelido_cartao = definir_apelido_cartao(dados_cartao)
+    agencia = info_agencia()
+    tipo_cartao = info_tipo_cartao()
+    num_cartao = info_num_cartao()
+    validade_cartao = info_validade_cartao()
+    cvv = info_cvv()
+    nome_titular = info_nome_titular()
+    cpf = info_cpf()
+    apelido_cartao = info_apelido_cartao(dados_cartao)
     
     #Insere as informações do cartão em um dicionário:
     dados_cartao.update({
-        apelido_cartao: {'agencia': agencia, 'tipo_cartao': tipo_cartao, 'numero_cartao': num_cartao,
-                         'validade_cartao': validade_cartao, 'cvv': cvv, 'nome_titular': nome_titular,
-                         'cpf': cpf}
+        apelido_cartao: {'Agência': agencia, 'Tipo de cartão': tipo_cartao, 'Núm. do cartão': num_cartao,
+                         'Validade do cartão': validade_cartao, 'CVV': cvv, 'Nome do titular': nome_titular,
+                         'CPF': cpf}
     })
     
     print('Cartão cadastrado com sucesso!')
@@ -355,17 +372,11 @@ def ver_dados_cartao(dados_cartao):
                 cartao_nao_encontrado()
                 continue
             else:
-                #Exibe as informações do cartão informado pelo usuário:
                 limpar_tela()
                 print('--------------------------------------------------')
-                print(f'Agencia: {dados_cartao[acesso_infos_cartao]['agencia']}\n'
-                    f'Tipo de cartão: {dados_cartao[acesso_infos_cartao]['tipo_cartao']}\n'
-                    f'Número do cartão: {dados_cartao[acesso_infos_cartao]['numero_cartao']}\n'
-                    f'Validade do cartão: {dados_cartao[acesso_infos_cartao]['validade_cartao']}\n'
-                    f'CVV: {dados_cartao[acesso_infos_cartao]['cvv']}\n'
-                    f'Nome do titular: {dados_cartao[acesso_infos_cartao]['nome_titular']}\n'
-                    f'CPF: {dados_cartao[acesso_infos_cartao]['cpf']}\n'
-                    f'Apelido do cartão: {acesso_infos_cartao}')
+                #Informa as chaves e os valores do dicionário de acordo com o apelido do cartão informado:
+                for chave, valor in dados_cartao[acesso_infos_cartao].items():
+                    print(f'{chave}: {valor}')
                 print('--------------------------------------------------')
                 espera_comando_user()
                 limpar_tela()
@@ -422,21 +433,25 @@ def fechar_programa():
     limpar_tela()
     print('Até logo!')
 
-                            
+#Armazena as informações do(s) cartão(es):                       
 dados_cartao = {}
 
-while True:
-    menu_principal()
-    opcao = obter_opcao()
-    limpar_tela()
-    
-    match opcao:
-        case 1:
-            dados_cartao = cadastrar_cartao(dados_cartao) 
-        case 2:
-            dados_cartao = ver_dados_cartao(dados_cartao)
-        case 3:
-            dados_cartao = excluir_cartao(dados_cartao)
-        case 4:
-            fechar_programa()
-            break
+def main(dados_cartao):
+    while True:
+        menu_principal()
+        opcao = obter_opcao()
+        limpar_tela()
+        
+        match opcao:
+            case 1:
+                dados_cartao = cadastrar_cartao(dados_cartao) 
+            case 2:
+                dados_cartao = ver_dados_cartao(dados_cartao)
+            case 3:
+                dados_cartao = excluir_cartao(dados_cartao)
+            case 4:
+                fechar_programa()
+                break
+
+#Executa a função principal (main):
+main(dados_cartao)
