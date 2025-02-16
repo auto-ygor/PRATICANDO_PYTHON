@@ -252,7 +252,7 @@ def cadastrar_cartao(dados_cartao):
             #A função "split" separa os nomes do titular e os armazena em uma lista:
             nome_titular = input('Nome do titular (coloque espaço a cada nome): ').split()
             #Formata os nomes informados pelo usuário:
-            nome_titular_formatado = ' '.join(nome_titular.capitalize() for nome_titular in nome_titular)
+            nome_titular_formatado = ' '.join(nome.capitalize() for nome in nome_titular)
             #Elimina os espaços em branco (facilita a verificação):
             elimina_espacos = nome_titular_formatado.replace(' ', '')
             
