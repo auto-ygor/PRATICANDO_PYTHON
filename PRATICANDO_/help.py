@@ -6,7 +6,7 @@ em que ele está e veja um arquivo python chamado "func_nomeDoArquivo.py".
 '''
 
 #Exemplo (mude conforme os exemplos acima):
-from utilidades.utils import message
+from exercicios.utils import message
 
 #Obtém a ajuda (passe a função escolhida como parâmetro):
 help(message)

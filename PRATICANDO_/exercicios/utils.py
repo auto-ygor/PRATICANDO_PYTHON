@@ -1,4 +1,6 @@
 from os import system, name
+from time import sleep
+
 
 def clear():
     '''
@@ -87,3 +89,29 @@ def option(quant_options):
             message("Opção inválida!")
             pause_clear()
             continue
+
+
+def close_program(msg="Até logo!"):
+    '''
+    Fecha o programa com uma contagem regressiva.
+    
+    :param msg: Recebe a mensagem (opcional)
+    :return: Não retorna nada
+    '''
+    for i in range(5, 0, -1):
+        print(f"Encerrando em {i}...")
+        sleep(1)
+        clear()
+    print(msg)
+
+
+def msg_exceptions(msg="Opção invalida!"):
+    '''
+    Exibe uma mensagem caso ocorra uma exceção.
+    
+    :param msg: Recebe a mensagem (opcional)
+    :return: Não retorna nada
+    '''
+    clear()
+    message(msg)
+    pause_clear()
