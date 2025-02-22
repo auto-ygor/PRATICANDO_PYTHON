@@ -82,13 +82,13 @@ def option(quant_options):
                 clear()
                 message("Opção inválida!")
                 pause_clear() 
-                continue
+                break
         #Caso a variável "opcao" não seja um número inteiro (continua o loop):                       
         except ValueError:
             clear()
             message("Opção inválida!")
             pause_clear()
-            continue
+            break
 
 
 def close_program(msg="Até logo!"):
