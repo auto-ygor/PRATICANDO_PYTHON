@@ -1,5 +1,5 @@
-from exercicios.cadastro_cartao import funcs_principais as fp
-from exercicios.utils import *
+from exercicios.cadastro_cartao import funcs_principais_cc as fp
+from exercicios.utils import message, option, clear, close_program
 
 #Armazena as informações do(s) cartão(es):                       
 dados_cartao = {}
