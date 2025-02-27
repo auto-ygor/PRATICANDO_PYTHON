@@ -27,7 +27,7 @@ def add_task(tasks):
                 for i in range(0, len(tasks)):
                     #verifica se o título informado já existe em "tasks":
                     if tasks[i]['Título'] == title:
-                        msg_exceptions("Já possui uma tarefa com esse mesmo nome!")
+                        msg_exceptions("Já existe uma tarefa com este mesmo nome!")
                         break
                     continue
                 #Caso o título informado não esteja em "tasks":
@@ -60,6 +60,8 @@ def add_task(tasks):
                     #Recebe a descrição da task:
                     message("DESCRIÇÃO DA TASK:")
                     description = input("R: ").capitalize()
+                case _:
+                    continue
             clear()
             return description
         
@@ -132,13 +134,18 @@ def remove_task(tasks):
                             #Cancela a exclusão:
                             msg_exceptions("Operação cancelada!")
                             break
+                        case _:
+                            break
                 #Caso a task informada esteja concluída, ela é removida diretamente:
                 else:
                     tasks.remove(tasks[i])
+                    clear()
+                    message(f"Task '{task_remove}' removida com sucesso!")
+                    pause_clear()
+                    break
             #Caso a task não exista em "tasks":
             else:
                 msg_exceptions("Task não encontrada!")
-                continue
     else:
         msg_exceptions("Nenhuma task cadastrada!")
     return tasks
@@ -174,6 +181,12 @@ def view_task(tasks):
 
 
 def complete_task(tasks):
+    '''
+    Marca uma task como concluída.
+    
+    :param tasks: lista com as tasks.
+    :return: tasks
+    '''
     if len(tasks) > 0:
         message("Informe o título da task a ser concluída!")
         task_complete = input("R: ").capitalize()
@@ -196,6 +209,8 @@ def complete_task(tasks):
                         break
                     case 2:
                         msg_exceptions("Operação cancelada!")
+                        break
+                    case _:
                         break
             #Caso a task não exista:
             else:

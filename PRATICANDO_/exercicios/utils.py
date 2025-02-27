@@ -79,15 +79,11 @@ def option(quant_options):
                 return opcao
             #Caso a opção seja inválida (continua o loop):
             else:
-                clear()
-                message("Opção inválida!")
-                pause_clear() 
+                msg_exceptions("Opção inválida!")
                 break
         #Caso a variável "opcao" não seja um número inteiro (continua o loop):                       
         except ValueError:
-            clear()
-            message("Opção inválida!")
-            pause_clear()
+            msg_exceptions("Opção inválida!")
             break
 
 
