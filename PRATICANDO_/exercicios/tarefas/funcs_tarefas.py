@@ -143,9 +143,9 @@ def remove_task(tasks):
                     message(f"Task '{task_remove}' removida com sucesso!")
                     pause_clear()
                     break
-            #Caso a task não exista em "tasks":
-            else:
-                msg_exceptions("Task não encontrada!")
+        #Caso a task não exista em "tasks":
+        else:
+            msg_exceptions("Task não encontrada!")
     else:
         msg_exceptions("Nenhuma task cadastrada!")
     return tasks
@@ -173,9 +173,9 @@ def view_task(tasks):
                 print("===================================")
                 pause_clear()
                 break               
-            #Caso a task não exista:
-            else:
-                msg_exceptions("Task não encontrada!")
+        #Caso a task não exista:
+        else:
+            msg_exceptions("Task não encontrada!")
     else:
         msg_exceptions("Nenhuma task cadastrada!")
 
@@ -212,9 +212,9 @@ def complete_task(tasks):
                         break
                     case _:
                         break
-            #Caso a task não exista:
-            else:
-                msg_exceptions("Task não encontrada!")
+        #Caso a task não exista:
+        else:
+            msg_exceptions("Task não encontrada!")
     else:
         msg_exceptions("Nenhuma task cadastrada!")
     return tasks
