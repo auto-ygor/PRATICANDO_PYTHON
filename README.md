@@ -4,6 +4,7 @@ Aceito críticas construtivas, assim como estou apto a ajudar outras pessoas!
 
 ---
 ### 1) ATIVANDO AMBIENTE VIRTUAL (.VENV):
+    Obs: Faça mudanças nos nomes dos diretórios se necessário.
 1. Pelo comand prompt (cmd):
 `C:\Users\Ygor\OneDrive\Documentos\MEUS_PROJETOS\PRATICANDO--PYTHON-\.env\Scripts>activate.bat`
 
